@@ -15,12 +15,16 @@ const app = express();
 
 // Set up connection of database
 db.setUpConnection();
+app.set('superSecret', '1111'); // secret variable
 
 // Using bodyParser middleware
+// use body parser so we can get info from POST and/or URL parameters!!!!!!!!!!!!!!!!!!!!!!!! NB NB NB
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use( bodyParser.json() );
 
 // Allow requests from any origin
 app.use(cors({ origin: '*' }));
+
 // =================================================================
 // routes ==========================================================
 // =================================================================
@@ -29,10 +33,11 @@ app.get('/setup', function(req, res) {
 	// create a sample user
 	var adam = new User({ 
 		name: 'Bogdan Adamovskyi', 
-		pass: 'admin'
+		password: 'admin'/*,
+		admin: true */
 	});
 	adam.save(function(err) {
-		if (err) throw err;
+		if (err) res.json({success:false,message:err.message});
 
 		console.log('User saved successfully');
 		res.json({ success: true });
@@ -41,7 +46,7 @@ app.get('/setup', function(req, res) {
 
 // basic route (http://localhost:8080)
 app.get('/', function(req, res) {
-	res.send('Hello! The API is at http://localhost:' + serverPort + '/api');
+	res.send('Hello! The API is at http://localhost:' + port + '/api');
 });
 
 // ---------------------------------------------------------
@@ -52,6 +57,40 @@ var apiRoutes = express.Router();
 // ---------------------------------------------------------
 // authentication (no middleware necessary since this isnt authenticated)
 // ---------------------------------------------------------
+// http://localhost:8080/api/register
+apiRoutes.post('/register', function(req, res) {
+	User.findOne({
+		name: req.body.name
+	}, function(err, user) {
+
+		if (err) res.json({success: false, message: " Find Error"});
+
+		if (user) {
+			res.json({ success: false, message: 'Registration failed. User already exist.' });
+		} else if (!user) {
+			
+			if (false) { //add not valid pass
+				res.json({ success: false, message: 'Registration failed. Wrong password.' });
+			} else {
+				console.log(req.body.name+" "+req.body.password)
+				var newUser = new User({ 
+		name: req.body.name, 
+		password: req.body.password
+	});
+	newUser.save(function(err) {
+		if (err)  res.json({success: false, message: "Save Error "+err.message+" "+ newUser });
+
+		console.log('User saved successfully');
+		res.json({ success: true });
+	});
+			}		
+
+		}
+
+	});
+
+	});
+
 // http://localhost:8080/api/authenticate
 apiRoutes.post('/authenticate', function(req, res) {
 
@@ -63,7 +102,7 @@ apiRoutes.post('/authenticate', function(req, res) {
 		if (err) throw err;
 
 		if (!user) {
-			res.json({ success: false, message: 'Authentication failed. User not found.' });
+			res.json({ success: false, message: 'Authentication failed. User not found. '+req.body.name });
 		} else if (user) {
 
 			// check if password matches
@@ -142,6 +181,8 @@ apiRoutes.get('/check', function(req, res) {
 });
 
 app.use('/api', apiRoutes);
+
+
 
 // =================================================================
 // start the server ================================================

@@ -1,10 +1,8 @@
-import mongoose from "mongoose";
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
-const Schema = mongoose.Schema;
-
-const UserSchema = new Schema({
-    name     : { type: String, required:true },
-    pass      : { type: String, required: true }
-});
-
-module.exports = mongoose.model('User', UserSchema);
+// set up a mongoose model
+module.exports = mongoose.model('User', new Schema({ 
+	name: String, 
+	password: String
+}));
