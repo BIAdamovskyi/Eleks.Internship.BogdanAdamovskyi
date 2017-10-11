@@ -9,6 +9,7 @@ import { serverPort } from '../config/config.json';
 import * as db from './utils/DataBaseUtils';
 var jwt    = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var User   = require('./models/User'); // get our mongoose model
+var Video   = require('./models/Video'); // get our mongoose model
 
 // Initialization of express application
 const app = express();
@@ -170,7 +171,25 @@ apiRoutes.get('/', function(req, res) {
 	res.json({ message: 'Welcome to the coolest API on earth!' });
 });
 
-apiRoutes.get('/users', function(req, res) {
+apiRoutes.post('/video', function(req,res){
+	var newMovie=new Video({
+	name     : req.body.name,
+    description : req.body.description,
+    genre     : req.body.genre,
+    infoUplodedByUser : req.body.infoUplodedByUser,
+    link : req.body.link,
+    dateofUpload : req.body.dateofUpload
+	});
+	newMovie.save(function(err) {
+		if (err)  res.json({success: false, message: "Save Error "+err.message});
+
+		console.log('Video saved successfully');
+		res.json({ success: true });
+	});	
+});
+
+
+/*apiRoutes.get('/users', function(req, res) {
 	User.find({}, function(err, users) {
 		res.json(users);
 	});
@@ -178,7 +197,7 @@ apiRoutes.get('/users', function(req, res) {
 
 apiRoutes.get('/check', function(req, res) {
 	res.json(req.decoded);
-});
+});*/
 
 app.use('/api', apiRoutes);
 

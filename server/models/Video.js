@@ -11,4 +11,5 @@ const VideoSchema = new Schema({
     dateofUpload : { type: Date}
 });
 
-mongoose.model('Video', VideoSchema);
+module.exports=mongoose.model('Video', VideoSchema);
+

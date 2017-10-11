@@ -12,6 +12,36 @@ export function setUpConnection() {
     mongoose.connect(`mongodb://${config.db.host}:${config.db.port}/${config.db.name}`);
 }
 
+export function getLast100(){
+
+}
+export function getLast100WithGenre(genre){
+
+}
+export function getVideoWithTimePeriod(time1,time2){
+
+}
+export function getVideoByName(name){
+
+}
+/*export function setInfo(inputVideo){
+var newVideo=new Video({
+	name     : inputVideo.name,
+    description : inputVideo.description,
+    genre     : inputVideo.genre,
+    infoUplodedByUser : inputVideo.infoUplodedByUser,
+    link : inputVideo.link,
+    dateofUpload : inputVideo.dateofUpload
+});
+	newVideo.save(function(err) {
+		if (err)  return -1;
+
+		console.log('Video saved successfully');
+		return 1;
+	});
+
+
+}*/
 /*
 export function listNotes(id) {
     return Note.find();
