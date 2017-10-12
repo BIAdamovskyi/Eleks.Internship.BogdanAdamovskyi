@@ -8,8 +8,12 @@ import '../models/Video';
 const User = mongoose.model('User');
 const Video = mongoose.model('Video');
 
+
+
 export function setUpConnection() {
     mongoose.connect(`mongodb://${config.db.host}:${config.db.port}/${config.db.name}`);
+    
+
 }
 
 export function getLast100(){
