@@ -1,9 +1,4 @@
-# Eleks.Internship.BogdanAdamovskyi
-Practical task of Bogdan Adamovskyi for Eleks Internship (Sep 2017)
-## Student Info
-* Name: Bogdan Adamovskyi
-* University: IFNTUNG
-* Course: ІІТ,КІм-16-1
+# Mongo-React-Template
 ## Task Info
 Розробити веб-сервіс та базу даних, які надають інформацію про різного роду відеоролики. 
 
